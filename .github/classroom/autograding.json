@@ -1,0 +1,24 @@
+{
+  "tests": [
+    {
+      "name": "Compile hw testbench SWEmu",
+      "setup": "sudo apt install libsystemc-dev",
+      "run": "pwd; make -C hw testbench",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": null
+    },
+    {
+      "name": "Run hw testbench",
+      "setup": "",
+      "run": "cd hw; ./testbench",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": null
+    }
+  ]
+}
