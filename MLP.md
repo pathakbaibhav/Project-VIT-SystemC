@@ -39,5 +39,3 @@ Once trained and validated, the MLP model can be deployed to classify new images
 ### Notes
 - If the model is already pre-trained, steps involving training (5-8) might be skipped or modified for fine-tuning.
 - In some implementations, especially those not strictly following the original ViT architecture, additional preprocessing or normalization steps might be included either before the MLP block or within its layers.
-
-This sequence of steps ensures that the MLP not only learns to classify based on the features transformed and selected by the Transformer but also optimizes its parameters to generalize well on unseen data.
