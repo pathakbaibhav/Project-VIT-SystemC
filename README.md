@@ -102,7 +102,7 @@ Uses fully connected architecture to produce classification
 **Output:** Scalar classification
 **Operation:** Fully connected layers to produce the classification. Heavily relies on GEMM, so maybe can experiment with our fixed-point implementation here🤷
 	
-### Task 4 (1 person): Tying everything together
+### Task 4 (1 person): Tying everything together - Robbie 
 This person is responsible for developing a nice interface to handle the input images and for establishing a convenient and standardized way to load the weights from a pretrained model into each layer. 
 They are also responsible for making sure the products from the above tasks function properly with each other. 
 
