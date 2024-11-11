@@ -1,4 +1,4 @@
-# prj-vit-team
+# PROJECT-VIT_Team
 
 EECE 7368 Project: Modeling a Vision Transformer SoC with SystemC
 
@@ -53,7 +53,7 @@ Depending on timing, we are interested in trying to create a synthesizable imple
 
 ## Project Breakdown + Distribution of Work
 
-### Task 1 (1 person): Patch + Position Embedding
+### Task 1 (1 person): Patch + Position Embedding - Tilak
 
 Calculates the embedding for the input image. 
 
@@ -106,7 +106,7 @@ Uses fully connected architecture to produce classification
 This person is responsible for developing a nice interface to handle the input images and for establishing a convenient and standardized way to load the weights from a pretrained model into each layer. 
 They are also responsible for making sure the products from the above tasks function properly with each other. 
 
-### Task 5 (1 person): Expanding the system and developing tests
+### Task 5 (1 person): Expanding the system and developing tests - Baibhav
 This person is tasked with making our SystemC implementation more generalized. We will probably center our development around a single pretrained model, so this person will be tasked with exploring ways to make our implementation work with any pretrained model so long as it follows a standardized format.
 This person is also tasked with designing and implementing tests that will be used to demonstrate our project’s functionality and performance. 
 
