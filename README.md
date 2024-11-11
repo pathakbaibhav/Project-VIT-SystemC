@@ -84,7 +84,7 @@ Calculates the embedding for the input image.
     - Combine the class embedding and all patch embeddings into a single array. 
     - This output is (N+1) x D, N is number of patches, D is embedding dimension, and the +1 is for the class embedding
 
-### Task 2 (2 people): Transformer Implementation
+### Task 2 (2 people): Transformer Implementation - Luyue
 
 Implementation of the common transformer block
 
