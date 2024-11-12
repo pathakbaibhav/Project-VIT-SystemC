@@ -60,7 +60,9 @@ Calculates the embedding for the input image.
 - **Input**: An image of dimension HxWxC = 256x256x3
 - **Output**: Sequence of flattened 2D patches of dimension NxP^2xC, where N=number of patches, P=height of each patch (patches are square), C=number of channels (3)
 #### Operation: 
-★ See section 3.1 of paper, or 11:00 mark of [this](https://www.youtube.com/watch?v=TrdevFK_am4) video
+★ Resources: 
+* See section 3.1 of paper, or 11:00 mark of [this](https://www.youtube.com/watch?v=TrdevFK_am4) video
+* See [Springer](https://www.sciencedirect.com/science/article/abs/pii/S1566253524000265) ViT Image patches 
 
 1. Read input image:
     The input is a 256×256×C image, where C is the number of color channels (e.g., C=3 for RGB images).
