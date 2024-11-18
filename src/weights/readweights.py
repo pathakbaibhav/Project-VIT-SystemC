@@ -1,7 +1,7 @@
 import timm
 
 # Using the ViT tiny model, trained/finetuned on imagenet
-model = timm.create_model('vit_tiny_patch16_384.augreg_in21k_ft_in1k', pretrained=True)
+model = timm.create_model('vit_tiny_patch16_224.augreg_in21k_ft_in1k', pretrained=True)
 
 # Save the model weights
 state_dict = model.state_dict()
@@ -23,4 +23,4 @@ with open("weights.cpp", "w") as f:
         f.write(f"// {name}\n")
         f.write(f"const float {name.replace('.', '_')}[] = {{ {cpp_array} }};\n\n")
 
-print("FP16 weights saved to weights.cpp")
+print("Weights saved to weights.cpp")
