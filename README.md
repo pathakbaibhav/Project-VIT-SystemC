@@ -55,8 +55,9 @@ Depending on timing, we are interested in trying to create a synthesizable imple
 
 ### Task 1 (1 person): Patch + Position Embedding - Tilak
 
-Nov19 Notes: Basic skeleton code added and need to configure the patchSize and embedDim based on the pre trained model architecture (e.g., ViT-B/ViT-L). 
-
+Nov19 Notes: 
+* Basic skeleton code added and need to configure the patchSize and embedDim based on the pre trained model architecture (e.g., ViT-B/ViT-L). 
+* Need to consider having a weights.h instead of weights.cpp ? 
 
 
 Calculates the embedding for the input image. 
