@@ -1,3 +1,6 @@
 [submodule "libsystemctlm-soc"]
 	path = libsystemctlm-soc
 	url = git@github.com:Xilinx/libsystemctlm-soc.git
+[submodule "eval"]
+	path = eval
+	url = https://github.com/EliSchwartz/imagenet-sample-images.git
