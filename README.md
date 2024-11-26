@@ -100,7 +100,7 @@ Implementation of the common transformer block
 **Output:** (N+1) x D matrix
 **Operation:** Performs multihead attention on the input. This is standard operation now, so just look it up😎
 
-### Task 3 (1 person): MLP Classification Block
+### Task 3 (1 person): MLP Classification Block - Aniket
 
 Uses fully connected architecture to produce classification 
 
