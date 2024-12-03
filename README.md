@@ -100,7 +100,7 @@ Implementation of the common transformer block
 **Output:** (N+1) x D matrix
 **Operation:** Performs multihead attention on the input. This is standard operation now, so just look it up😎
 
-### Task 3 (1 person): MLP Classification Block
+### Task 3 (1 person): MLP Classification Block - Aniket
 
 Uses fully connected architecture to produce classification 
 
@@ -108,10 +108,37 @@ Uses fully connected architecture to produce classification
 **Input:** Weights+bias from pretrained model
 **Output:** Scalar classification
 **Operation:** Fully connected layers to produce the classification. Heavily relies on GEMM, so maybe can experiment with our fixed-point implementation here🤷
-	
-### Task 4 (1 person): Tying everything together - Robbie 
-This person is responsible for developing a nice interface to handle the input images and for establishing a convenient and standardized way to load the weights from a pretrained model into each layer. 
-They are also responsible for making sure the products from the above tasks function properly with each other. 
+Step 1: Input Extraction
+Extract the [CLS] Token:
+From the transformer's output sequence of shape (N+1, D), isolate the first token.
+The [CLS] token represents the aggregated information needed for classification.
+
+Step 2: Linear Transformation
+First Linear Layer
+Operation: z = W1 . x + b1
+x: input vector of shape(D,1)
+W1: Weight matrix of shape (H,D)
+H: Hidden layer Size (Can be same as D or Different)
+b1: Bias vector of shape (H, 1)
+z: Output of the linear, shape (H,1)
+
+Step 3: Activation Function
+Apply Non-Linear Activation 
+Common Choices: GELLU 
+Operation: a = Activation(z)
+a = Activated output, shape (H,1)
+
+Step 4: Output Layer 
+Second Linear Layer 
+Operation Layer  y = W2 . a  + b2
+W2: Weight Matrix of shape (K, H)
+b2: Bias Vector of shpae (K, 1)
+y : Output Logits, shape (K,1)
+
+Step 5: Optional Step Softmax Activation 
+
+
+
 
 ### Task 5 (1 person): Expanding the system and developing tests - Baibhav
 This person is tasked with making our SystemC implementation more generalized. We will probably center our development around a single pretrained model, so this person will be tasked with exploring ways to make our implementation work with any pretrained model so long as it follows a standardized format.

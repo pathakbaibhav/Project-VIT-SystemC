@@ -11,7 +11,7 @@ Uses fully connected architecture to produce classification
 
 Impoartant Links: 1) https://viso.ai/deep-learning/vision-transformer-vit/
 2) https://medium.com/@hassaanidrees7from-transformers-to-vision-transformers-vit-applying-nlp-models-to-computer-vision-fe6f13b4d014
-
+3)https://medium.com/correll-lab/building-a-vision-transformer-model-from-scratch-a3054f707cc6
 
 CNN vs VIT
 CNN uses pixel arrays, whereas ViT splits the input images into visual tokens.The visual transformer divides an image into fixed-size patches, correctly embeds each of them, and includes positional embedding as an input to the transformer encoder. Moreover, ViT models outperform CNNs by almost four times when it comes to computational efficiency and accuracy.
