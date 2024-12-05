@@ -119,6 +119,7 @@ Eigen is required for matrix operations. Install it via your package manager:
 
 ```bash
 sudo apt-get install libeigen3-dev
+```
 
 ### Task 3 (1 person): MLP Classification Block - Aniket
 
