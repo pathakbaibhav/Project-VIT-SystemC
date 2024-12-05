@@ -91,7 +91,7 @@ Calculates the embedding for the input image.
     - Combine the class embedding and all patch embeddings into a single array. 
     - This output is (N+1) x D, N is number of patches, D is embedding dimension, and the +1 is for the class embedding
 
-### Task 2 (2 people): Transformer Implementation - Luyue
+### Task 2 (2 people): Transformer Implementation - Luyue & Baibhav
 
 Implementation of the common transformer block
 
@@ -99,6 +99,26 @@ Implementation of the common transformer block
 **Input:** Weights, biases, and number of heads, initialized from pretrained model
 **Output:** (N+1) x D matrix
 **Operation:** Performs multihead attention on the input. This is standard operation now, so just look it up😎
+
+#### Encoder Module
+
+The `encoder` module implements the core Transformer encoder functionalities:
+
+1. **Self-Attention**: Computes Query (Q), Key (K), and Value (V) matrices and applies scaled dot-product attention to extract relationships between input elements.
+2. **Feed-Forward Network**: Refines attention output with fully connected layers and a GELU activation.
+3. **Residual Connections**: Adds input back to outputs for stable gradient flow.
+
+#### Files
+
+- **`src/sw/encoder.h`**: Defines the encoder interface.
+- **`src/sw/encoder.cpp`**: Implements attention, feed-forward, and residual logic.
+
+#### Install Eigen
+
+Eigen is required for matrix operations. Install it via your package manager:
+
+```bash
+sudo apt-get install libeigen3-dev
 
 ### Task 3 (1 person): MLP Classification Block - Aniket
 
