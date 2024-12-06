@@ -102,7 +102,8 @@ int main() {
     // 1. Extract patches
     vector<Mat> patches = extractPatches(image, patchSize);
 
-    // 2. Convert patches to vectors
+    // 2. Convert patches to vectors 
+    // - Flattening the 16x16 to 256x1 ? 
     vector<Eigen::VectorXf> patchVectors;
     for (const auto& patch : patches) {
         Eigen::VectorXf patchVec = patchToVector(patch);
@@ -120,7 +121,10 @@ int main() {
         combinedEmbeddings.row(i) = patchVectors[i].transpose() + positionEmbeddings.row(i);
     }
 
-    // Output the shape of combined embeddings (for debugging)
+    // Class embedding ? 
+    
+
+    // Output the shape of combined embeddings (for debugging) Is it adhering to the N
     cout << "Combined Embeddings Shape: " << combinedEmbeddings.rows() << " x " << combinedEmbeddings.cols() << endl;
 
     return 0;
