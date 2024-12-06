@@ -9,19 +9,23 @@ In this project, we explore the idea of implementing the Vision Transformer (ViT
 <details>
 <summary>Table of Contents</summary>
 
-- [prj-vit-team](#prj-vit-team)
+- [PROJECT-VIT\_Team](#project-vit_team)
   - [Description](#description)
   - [Technical Overview](#technical-overview)
     - [Vision Transformer Overview](#vision-transformer-overview)
     - [ViT in System C](#vit-in-system-c)
     - [(Stretch Synthesizable ViT)](#stretch-synthesizable-vit)
   - [Project Breakdown + Distribution of Work](#project-breakdown--distribution-of-work)
-    - [Task 1 (1 person): Patch + Position Embedding](#task-1-1-person-patch--position-embedding)
+    - [Task 1 (1 person): Patch + Position Embedding - Tilak](#task-1-1-person-patch--position-embedding---tilak)
       - [Operation:](#operation)
-    - [Task 2 (2 people): Transformer Implementation](#task-2-2-people-transformer-implementation)
-    - [Task 3 (1 person): MLP Classification Block](#task-3-1-person-mlp-classification-block)
-    - [Task 4 (1 person): Tying everything together](#task-4-1-person-tying-everything-together)
-      - [Task 5 (1 person): Expanding the system and developing tests](#task-5-1-person-expanding-the-system-and-developing-tests)
+    - [Task 2 (2 people): Transformer Implementation - Luyue \& Baibhav](#task-2-2-people-transformer-implementation---luyue--baibhav)
+      - [Encoder Module](#encoder-module)
+      - [Files](#files)
+      - [Install Eigen](#install-eigen)
+    - [Task 3 (1 person): MLP Classification Block - Aniket](#task-3-1-person-mlp-classification-block---aniket)
+    - [Task 4 (1 person): Tying everything together - Robbie](#task-4-1-person-tying-everything-together---robbie)
+      - [TODO:](#todo)
+    - [Task 5 (1 person): Expanding the system and developing tests - Baibhav](#task-5-1-person-expanding-the-system-and-developing-tests---baibhav)
   - [Resources](#resources)
 </details>
 
@@ -159,6 +163,21 @@ y : Output Logits, shape (K,1)
 Step 5: Optional Step Softmax Activation 
 
 
+### Task 4 (1 person): Tying everything together - Robbie 
+This person is responsible for developing a nice interface to handle the input images and for establishing a convenient and standardized way to load the weights from a pretrained model into each layer. 
+They are also responsible for making sure the products from the above tasks function properly with each other.
+
+#### TODO:
+- Convert patch embedding, transformer blocks, mpl to SC_MODULE
+- Make weights into binary (ideal) or csv (temporary) files rather than .txt
+- Patch embedding:
+  - Make sure image reading works okay, optionally modify to read from the CSV produced by the python script
+  - Find out the correct embedding dimension for our model
+  - Should be SC_THREAD or SC_MODULE? How to properly handle timing?
+- Transformer:
+  - Synchronization + data management
+- MLP
+  - What is the output type? Probably an int, and if so we should implement a small function to handle to mapping from int outputs to the label string (e.g. an output of 5 might correspond to "Shark", output of 8 "car", etc.)
 
 
 ### Task 5 (1 person): Expanding the system and developing tests - Baibhav
