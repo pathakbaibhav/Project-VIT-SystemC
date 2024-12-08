@@ -1,4 +1,9 @@
 .vscode/
+MLP/SRC/weights/trained_vit.pth
+MLP/SRC/weights/trained_vit.pth
+src/weights/weights.cpp
+src/sw/weights.cpp
+MLP/SRC/weights/weights.h
 
 # Prerequisites
 *.d
@@ -45,3 +50,4 @@ sw/gemm_tb/gemm_tb
 sw/vector_processor_tb/vector_testbench
 hw/zynq_demo
 hw/testbench
+
