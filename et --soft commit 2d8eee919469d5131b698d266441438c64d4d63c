@@ -1,0 +1,59 @@
+[33mcommit 3eb1e7f550a7c8bcba01b58585970d9c4b9fdd2a[m[33m ([m[1;36mHEAD -> [m[1;32mml_aniket[m[33m)[m
+Author: AniketFasate27 <fasatenaiket5@gmail.com>
+Date:   Sun Dec 8 15:58:35 2024 -0500
+
+    Configure LFS for large files
+
+[33mcommit cbf2c84ed2decc487285c367ad4935d853d09013[m
+Author: AniketFasate27 <fasatenaiket5@gmail.com>
+Date:   Sun Dec 8 15:49:35 2024 -0500
+
+    Add large files to .gitignore
+
+[33mcommit 6538eb094fba1d395257f47358a4701c01f3515f[m
+Author: AniketFasate27 <fasatenaiket5@gmail.com>
+Date:   Sun Dec 8 15:45:13 2024 -0500
+
+    Update .gitignore to exclude specific files
+
+[33mcommit 2d8eee919469d5131b698d266441438c64d4d63c[m
+Author: AniketFasate27 <fasatenaiket5@gmail.com>
+Date:   Sun Dec 8 15:15:14 2024 -0500
+
+    #7 Sucessfully implemneted the machine learning algotithm for the vision transformer
+
+[33mcommit 2431aff47895b782c699eb0b9302a4f3dba939bd[m[33m ([m[1;31morigin/ml_aniket[m[33m)[m
+Author: AniketFasate27 <fasatenaiket5@gmail.com>
+Date:   Fri Dec 6 13:49:49 2024 -0500
+
+    new file
+
+[33mcommit 4c0006b6c58e3679d0c223e5b01845c74485eecf[m
+Author: AniketFasate27 <fasatenaiket5@gmail.com>
+Date:   Fri Dec 6 13:40:22 2024 -0500
+
+    pushing the ML part
+
+[33mcommit 7eff92794f8eaff41af31a234c70724f125f67c8[m
+Author: Tilak1 <tilakmarupilla67@gmail.com>
+Date:   Tue Dec 3 13:13:33 2024 -0500
+
+    Added stb_image and standard vit cpp files and demo images
+
+[33mcommit 4ad6bced240edba41f4ba0cd7569eafd9dbf4b24[m
+Author: AniketFasate27 <fasatenaiket5@gmail.com>
+Date:   Tue Nov 26 13:39:11 2024 -0500
+
+    Readme me updated
+
+[33mcommit ae99045045fe4e47baff94891bdd3190b855712d[m
+Author: AniketFasate27 <fasatenaiket5@gmail.com>
+Date:   Tue Nov 26 13:16:00 2024 -0500
+
+    readme updated
+
+[33mcommit 43c0979366f567e1d73f0411856abb142e24e794[m
+Author: Tilak Marupilla <tilakmarupilla67@gmail.com>
+Date:   Tue Nov 19 13:25:09 2024 -0500
+
+    Update README.md on weights.h or cpp file discusssion
