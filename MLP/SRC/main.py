@@ -177,7 +177,7 @@ def main():
     embed_dim = 768
     num_heads = 12
     mlp_dim = 3072
-    num_layers = 100
+    num_layers = 12
     num_classes = 15  # Adjust based on your dataset
 
     # Parse command-line arguments
