@@ -11,12 +11,13 @@
 #include <systemc>
 #include "patchEmbedding.h"
 
+using namespace sc_core;
 
 SC_MODULE (VisionTransformer) {
     public:
         /** Input/Output */
         std::string img_path;           // Path to the input image
-        stt::string weights_dir;        // Directory with all of the weight files
+        std::string weights_dir;        // Directory with all of the weight files
         int patch_size;
         int embed_dim;
 
@@ -29,13 +30,13 @@ SC_MODULE (VisionTransformer) {
         /** Internal signals/values */
         float* pe_output_buffer;        // Array to store the output of the patch embedding
 
-        sc_signal<bool> pe_done;        // Signals that patch embedding has completed
+        sc_signal<bool> pe_start;       // Signals to start the patch embedding
+        sc_signal<bool> pe_done;        // Signals that the patch embedding is done
 
         /** Layers */
         PatchEmbedding pe;
         // transformer tr;
         // fullyConnected fc;
-
 
         void run();                     // Run inference
 
@@ -51,9 +52,9 @@ SC_MODULE (VisionTransformer) {
             pe.img_length(img_length);
             pe.img_height(img_height);
             pe.img_channels(img_channels);
+            pe.start(pe_start);
             pe.done(pe_done);
 
-            SC_METHOD(run);             // Eventually this should be sensitive to the image being completely loaded
-            sensitive << start;
+            SC_THREAD(run);             // Eventually this should be sensitive to the image being completely loaded
         }
 };

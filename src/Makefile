@@ -1,4 +1,4 @@
-# if SYSTEMC is installed in non-standard location (and environment var set)
+# If SYSTEMC is installed in a non-standard location (and environment var set)
 ifneq ($(SYSTEMC),)
 	# If SystemC is manually built, must match C++std
 	SYSTEMC_LIBS ?= lib64
@@ -8,42 +8,53 @@ ifneq ($(SYSTEMC),)
 	CPPFLAGS += -I$(SYSTEMC)/include -std=c++$(SYSTEMC_CSTD)
 	LDFLAGS += -L$(SYSTEMC)/$(SYSTEMC_LIBS) -lsystemc
 else
-	# ask the system where installed
+	# Ask the system where it's installed
 	LDFLAGS += $(shell pkg-config --libs systemc)
 endif
 
+# OpenCV setup
+OPENCV_CFLAGS := $(shell pkg-config --cflags opencv4) # Or opencv depending on version
+OPENCV_LDFLAGS := $(shell pkg-config --libs opencv4)
+
+# Eigen library
+CXXFLAGS += -I/usr/include/eigen3
+
+# Debug symbols
+CPPFLAGS += -g
+
+# Default target 
 TARGET := main
-# SRC_DIRS := hw sw testbench
-SRC_DIRS := testbench include hw
+SRC_DIRS := testbench hw
 SRCS := $(wildcard $(addsuffix /*.cpp, $(SRC_DIRS)))
 OBJS := $(SRCS:.cpp=.o)
 
-# auto generate dependenices
-#see: http://www.microhowto.info/howto/automatically_generate_makefile_dependencies.html
+# Auto generate dependencies
+# See: http://www.microhowto.info/howto/automatically_generate_makefile_dependencies.html
 CPPFLAGS += -MMD -MP
 
-# debug symbols 
-CPPFLAGS += -g
+# Combine all flags
+CXXFLAGS += $(OPENCV_CFLAGS)
+LDFLAGS += $(OPENCV_LDFLAGS)
 
-# default target 
+# Default target
 all: $(TARGET)
 
-# link executable 
+# Link executable 
 $(TARGET): $(OBJS)
 	$(CXX) $^ $(LDFLAGS) -o $@
 
-# execute test
+# Execute test
 test: $(TARGET)
 	# python3 scripts/imgLoadAndPreprocess.py ../eval/JPEG tmp/img.csv
 	# python3 scripts/weights/readweights_multiple_files.py tmp/weights
 	./$(TARGET) tmp/img.csv tmp/weights
 
-# clean everyting 
+# Clean everything 
 clean:
 	rm -rf $(SRCS:%.cpp=%.o) $(SRCS:%.cpp=%.d) $(TARGET) trace.vcd
 	# rm -rf tmp/*
 
 .PHONY: clean
 
-# include generated dependencies (created upon first build)
+# Include generated dependencies (created upon first build)
 -include $(SRCS:%.cpp=%.d)

@@ -26,9 +26,9 @@ int sc_main(int argc, char* argv[])
     Testbench tb("tb");
 
     tb.img_path = argv[1];
-    tb.weights_path = argv[2];
+    tb.weights_dir = argv[2];
     tb.patch_size = 16;
-    tb.embed_dim = 724;
+    tb.embed_dim = 768;
 
     cout << "Starting simulation" << endl;
     sc_start();

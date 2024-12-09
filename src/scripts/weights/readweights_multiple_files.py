@@ -1,6 +1,7 @@
 import sys
 import os
 import timm
+import numpy as np
 
 def save_single_weight(output_dir, name, array):
     # Extract the category and block name based on the weight name
@@ -19,25 +20,26 @@ def save_single_weight(output_dir, name, array):
         category = 'mlp'
     else:
         category = None
-    
+
     if category:
         # Generate the directory path for each category (embedding, trBlockX, etc.)
         block_dir = os.path.join(output_dir, category)
         os.makedirs(block_dir, exist_ok=True)
         
-        # Generate the file path for the weight file (e.g., 'attn_proj_bias_weights.txt')
-        file_name = f"{name.replace('.', '_')}_weights.txt"
+        # Generate the file path for the weight file
+        file_name = f"{name.replace('.', '_')}_weights.csv"
         file_path = os.path.join(block_dir, file_name)
 
-        # Flatten the array and convert it to a C++ array format
-        flat_array = array.flatten()
-        cpp_array = ", ".join(map(str, flat_array))
+        # Flatten arrays for CSV saving if necessary
+        if array.ndim == 1:
+            reshaped_array = array.reshape(1, -1)  # Save as a single row
+        elif array.ndim > 2:
+            reshaped_array = array.reshape(array.shape[0], -1)  # Merge the last dimensions
+        else:
+            reshaped_array = array  # Already 2D
 
-        # Write to the file
-        with open(file_path, "w") as f:
-            f.write(f"// {name}\n")
-            f.write(f"const float {name.replace('.', '_')}[] = {{ {cpp_array} }};\n\n")
-
+        # Save to CSV
+        np.savetxt(file_path, reshaped_array, delimiter=",")
         print(f"Saved {name} weights to {file_path}")
 
 def save_weights(output_dir):
@@ -53,7 +55,7 @@ def save_weights(output_dir):
 
     # Save weights to corresponding files
     for name, tensor in state_dict.items():
-        print(f"Saving weight for {name}")
+        print(f"Saving weight for {name}, shape: {tensor.shape}, ndim: {tensor.ndimension()}")
         save_single_weight(output_dir, name, tensor.cpu().numpy())
     
     print(f"Weights saved to {output_dir}")

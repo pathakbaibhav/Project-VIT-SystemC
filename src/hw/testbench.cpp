@@ -16,11 +16,11 @@
 using namespace std;
 
 void Testbench::stim() {                // SC_THREAD
-    img_length = 224;
-    img_height = 224;
-    img_channel = 3;
+    img_length = IMAGE_WIDTH;
+    img_height = IMAGE_HEIGHT;
+    img_channels = IMAGE_CHANNELS;
 
-    start = 1;          // Run inference
+    start_inference = 1;          // Run inference
     wait(10, SC_NS);
 }
 
