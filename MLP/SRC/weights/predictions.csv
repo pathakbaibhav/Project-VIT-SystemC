@@ -1,0 +1,16 @@
+Image,Predicted Class 1,Score 1,Predicted Class 2,Score 2,Predicted Class 3,Score 3
+apple.jpg,hen,0.4333,house_finch,0.1261,electric_ray,0.0966
+demo_4.png,goldfinch,0.3686,hen,0.1161,ostrich,0.1111
+tench.jpg,electric_ray,0.1869,goldfinch,0.1720,hen,0.1444
+armadillo.jpg,hen,0.3272,hammerhead,0.2054,goldfinch,0.1291
+coconut.jpg,hen,0.4476,house_finch,0.1353,hammerhead,0.1001
+demo_3.png,hen,0.2230,junco,0.1597,house_finch,0.0999
+polars.jpeg,hen,0.2008,goldfinch,0.1750,house_finch,0.1428
+giraffe.jpg,hen,0.4621,ostrich,0.0969,goldfinch,0.0905
+demo_2.jpg,goldfinch,0.5779,hen,0.1312,electric_ray,0.0542
+demo_7.png,goldfinch,0.2096,hen,0.2018,electric_ray,0.1178
+cheetah.jpg,hen,0.4368,goldfinch,0.1532,hammerhead,0.1124
+demo_9.jpg,goldfinch,0.1865,hen,0.1747,hammerhead,0.1706
+kiwi.jpg,hen,0.2708,goldfinch,0.1823,goldfish,0.1317
+magpie.jpeg,goldfinch,0.2622,electric_ray,0.1413,ostrich,0.1118
+demo_1.png,hen,0.3289,goldfinch,0.2794,house_finch,0.0962

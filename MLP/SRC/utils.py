@@ -3,132 +3,96 @@
 import torch
 import vit  # Ensure vit.py is in the same directory or adjust the path accordingly
 
+# utils.py
+
+import re
+
 def rename_state_dict_keys(state_dict):
     """
-    Renames the keys in the state_dict to match the custom VisionTransformer's expected keys.
+    Renames keys from the checkpoint to match the model's state_dict.
 
     Args:
-        state_dict (dict): Original state dictionary with keys from the saved model.
+        state_dict (dict): Original state_dict from the checkpoint.
 
     Returns:
-        dict: New state dictionary with renamed keys, excluding incompatible ones.
+        dict: Renamed state_dict compatible with the model.
     """
     new_state_dict = {}
     for key, value in state_dict.items():
-        if key.startswith('vit.embeddings.'):
-            # Handle embedding-related keys
-            suffix = key[len('vit.embeddings.'):]  # Remove 'vit.embeddings.' prefix
-            if suffix == 'cls_token':
-                new_key = 'cls_token'
-                new_state_dict[new_key] = value
-                print(f"Mapped {key} to {new_key}")
-            elif suffix == 'position_embeddings':
-                # Map to 'pos_embed.pos_embed' as per vit.py's PositionalEmbedding
-                new_key = 'pos_embed.pos_embed'
-                new_state_dict[new_key] = value
-                print(f"Mapped {key} to {new_key}")
-            elif suffix.startswith('patch_embeddings.projection.'):
-                # Map 'patch_embeddings.projection.weight' to 'patch_embed.proj.weight'
-                proj_suffix = suffix[len('patch_embeddings.projection.'):]
-                if proj_suffix in ['weight', 'bias']:
-                    new_key = f'patch_embed.proj.{proj_suffix}'
-                    new_state_dict[new_key] = value
-                    print(f"Mapped {key} to {new_key}")
-                else:
-                    print(f"Skipping unhandled projection key: {key}")
-            else:
-                # Unhandled embedding key, skip
-                print(f"Skipping unhandled embedding key: {key}")
-                continue
-
+        # Mapping for embedding layers
+        if key == 'vit.embeddings.cls_token':
+            new_key = 'cls_token'
+        elif key == 'vit.embeddings.position_embeddings':
+            new_key = 'pos_embed.pos_embed'
+        elif key == 'vit.embeddings.patch_embeddings.projection.weight':
+            new_key = 'patch_embed.proj.weight'
+        elif key == 'vit.embeddings.patch_embeddings.projection.bias':
+            new_key = 'patch_embed.proj.bias'
+        
+        # Mapping for transformer encoder layers
         elif key.startswith('vit.encoder.layer.'):
-            # Handle transformer encoder layer keys
-            parts = key.split('.')
-            if len(parts) >= 7:
-                layer_num = parts[3]  # e.g., '0', '1', etc.
-                submodule = parts[4]  # e.g., 'attention', 'intermediate', 'output', etc.
-                att_mlp = parts[5]  # e.g., 'attention', 'layernorm_before', etc.
-                param = parts[6]  # e.g., 'weight', 'bias', etc.
-
-                if submodule == 'attention' and att_mlp == 'attention':
-                    if param == 'attention.query.weight':
-                        new_key = f'transformer.{layer_num}.attention.in_proj_weight'
-                    elif param == 'attention.query.bias':
-                        new_key = f'transformer.{layer_num}.attention.in_proj_bias'
-                    elif param == 'attention.output.dense.weight':
-                        new_key = f'transformer.{layer_num}.attention.out_proj.weight'
-                    elif param == 'attention.output.dense.bias':
-                        new_key = f'transformer.{layer_num}.attention.out_proj.bias'
-                    else:
-                        # Unhandled attention parameter, skip
-                        print(f"Skipping unhandled attention parameter: {key}")
-                        continue
-                elif submodule == 'intermediate':
-                    if param == 'dense.weight':
-                        new_key = f'transformer.{layer_num}.mlp.0.weight'
-                    elif param == 'dense.bias':
-                        new_key = f'transformer.{layer_num}.mlp.0.bias'
-                    else:
-                        print(f"Skipping unhandled intermediate parameter: {key}")
-                        continue
-                elif submodule == 'output':
-                    if param == 'dense.weight':
-                        new_key = f'transformer.{layer_num}.mlp.3.weight'
-                    elif param == 'dense.bias':
-                        new_key = f'transformer.{layer_num}.mlp.3.bias'
-                    else:
-                        print(f"Skipping unhandled output parameter: {key}")
-                        continue
-                elif submodule.startswith('layernorm_before'):
-                    if param == 'weight':
-                        new_key = f'transformer.{layer_num}.layer_norm1.weight'
-                    elif param == 'bias':
-                        new_key = f'transformer.{layer_num}.layer_norm1.bias'
-                    else:
-                        print(f"Skipping unhandled layernorm_before parameter: {key}")
-                        continue
-                elif submodule.startswith('layernorm_after'):
-                    if param == 'weight':
-                        new_key = f'transformer.{layer_num}.layer_norm2.weight'
-                    elif param == 'bias':
-                        new_key = f'transformer.{layer_num}.layer_norm2.bias'
-                    else:
-                        print(f"Skipping unhandled layernorm_after parameter: {key}")
-                        continue
-                else:
-                    # Unhandled submodule, skip
-                    print(f"Skipping unhandled submodule: {key}")
-                    continue
-
-                new_state_dict[new_key] = value
-                print(f"Mapped {key} to {new_key}")
+            # Example key: 'vit.encoder.layer.0.attention.attention.query.weight'
+            pattern = r'^vit\.encoder\.layer\.(\d+)\.attention\.attention\.(query|key|value)\.(weight|bias)$'
+            match = re.match(pattern, key)
+            if match:
+                layer_num, attn_type, param = match.groups()
+                new_key = f"transformer.{layer_num}.attention.{attn_type}.{param}"
             else:
-                # Key does not have enough parts, skip
-                print(f"Skipping key with insufficient parts: {key}")
-                continue
-
-        elif key.startswith('vit.layernorm.'):
-            # Handle final layer normalization
-            parts = key.split('.')
-            if len(parts) >= 3:
-                param = parts[2]
-                if param == 'weight':
-                    new_key = 'norm.weight'
-                elif param == 'bias':
-                    new_key = 'norm.bias'
+                # Handle other attention-related keys
+                pattern_out_proj = r'^vit\.encoder\.layer\.(\d+)\.attention\.output\.dense\.(weight|bias)$'
+                match_out = re.match(pattern_out_proj, key)
+                if match_out:
+                    layer_num, param = match_out.groups()
+                    new_key = f"transformer.{layer_num}.attention.out_proj.{param}"
                 else:
-                    print(f"Skipping unhandled layernorm parameter: {key}")
-                    continue  # Unhandled parameter, skip
-                new_state_dict[new_key] = value
-                print(f"Mapped {key} to {new_key}")
-            else:
-                print(f"Skipping layernorm key with insufficient parts: {key}")
-                continue
+                    # Handle intermediate dense layers
+                    pattern_intermediate = r'^vit\.encoder\.layer\.(\d+)\.intermediate\.dense\.(weight|bias)$'
+                    match_intermediate = re.match(pattern_intermediate, key)
+                    if match_intermediate:
+                        layer_num, param = match_intermediate.groups()
+                        new_key = f"transformer.{layer_num}.mlp.0.{param}"
+                    else:
+                        # Handle output dense layers
+                        pattern_output = r'^vit\.encoder\.layer\.(\d+)\.output\.dense\.(weight|bias)$'
+                        match_output = re.match(pattern_output, key)
+                        if match_output:
+                            layer_num, param = match_output.groups()
+                            new_key = f"transformer.{layer_num}.mlp.3.{param}"
+                        else:
+                            # Handle layernorm_before and layernorm_after
+                            pattern_ln_before = r'^vit\.encoder\.layer\.(\d+)\.layernorm_before\.(weight|bias)$'
+                            match_ln_before = re.match(pattern_ln_before, key)
+                            if match_ln_before:
+                                layer_num, param = match_ln_before.groups()
+                                new_key = f"transformer.{layer_num}.layer_norm1.{param}"
+                            else:
+                                pattern_ln_after = r'^vit\.encoder\.layer\.(\d+)\.layernorm_after\.(weight|bias)$'
+                                match_ln_after = re.match(pattern_ln_after, key)
+                                if match_ln_after:
+                                    layer_num, param = match_ln_after.groups()
+                                    new_key = f"transformer.{layer_num}.layer_norm2.{param}"
+                                else:
+                                    # If none of the patterns match, skip the key
+                                    print(f"Skipping unhandled key: {key}")
+                                    continue
 
+        # Mapping for final layer normalization
+        elif key == 'vit.layernorm.weight':
+            new_key = 'norm.weight'
+        elif key == 'vit.layernorm.bias':
+            new_key = 'norm.bias'
+
+        # Mapping for classifier
+        elif key == 'vit.classifier.weight':
+            new_key = 'classifier.weight'
+        elif key == 'vit.classifier.bias':
+            new_key = 'classifier.bias'
+        
         else:
-            # Unhandled key, skip
             print(f"Skipping unhandled key: {key}")
-            continue
+            continue  # Skip keys that are not handled
+        
+        # Assign the value to the new key
+        new_state_dict[new_key] = value
 
-    print(f"Total keys in new_state_dict: {len(new_state_dict)}")
     return new_state_dict
