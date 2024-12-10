@@ -34,11 +34,11 @@ SC_MODULE(Transformer) {
         Eigen::MatrixXf mlp_fc2_weight;             // Shape: [768, 3072]
         Eigen::VectorXf mlp_fc2_bias;               // Shape: [768]
         
-        void self_attention();                      // Self-Attention Layer
-        void feed_forward();                        // Feed-Forward Network
-        void compute_output();                      // Compute the output
-        void load_weights();                        // Load the weights
-        void transformerMain();                     // Main function for the transformer block   
+        Eigen::MatrixXf self_attention();                       // Self-Attention Layer
+        Eigen::MatrixXf feed_forward(Eigen::MatrixXf);          // Feed-Forward Network
+        Eigen::MatrixXf compute_output(Eigen::MatrixXf);        // Compute the output
+        void load_weights();                                    // Load the weights
+        Eigen::MatrixXf transformerMain();                      // Main function for the transformer block   
 
     public:
         std::string weights_dir;        // Directory with all of the weight files
@@ -57,13 +57,13 @@ SC_MODULE(Transformer) {
         SC_CTOR(Transformer) {
             SC_THREAD(run);
 
-            SC_METHOD(self_attention);
-            sensitive << inpL;
+            // SC_METHOD(self_attention);
+            // sensitive << inpL;
 
-            SC_METHOD(feed_forward);
-            sensitive << inpFF;
+            // SC_METHOD(feed_forward);
+            // sensitive << inpFF;
 
-            SC_METHOD(compute_output);
-            sensitive << cur;
+            // SC_METHOD(compute_output);
+            // sensitive << cur;
         }
 };
