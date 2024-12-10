@@ -8,6 +8,7 @@
  * 
  */
 
+#include <systemc.h>
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -37,4 +38,17 @@ void Testbench::getClassification() {   // SC_METHOD
     cout << "Image path: " << img_path << "  ****  ";
     cout << "Weight directory: " << weights_dir << endl;
     cout << "Classification: " << classification << endl;
+}
+
+int sc_main(int argc, char *argv[])
+{
+    // Instantiate your top-level module
+    VisionTransformer vt("vision_transformer");
+
+    // Set up any necessary signals or stimuli here
+
+    // Run the simulation
+    sc_start();
+
+    return 0;
 }

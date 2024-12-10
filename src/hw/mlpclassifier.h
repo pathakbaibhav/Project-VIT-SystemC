@@ -1,7 +1,15 @@
-// src/hw/mlpclassifier.h
+/**
+ * @file testbench.cpp
+ * @brief
+ * @version 0.1
+ * @date 2024-12-03
+ *
+ * @copyright Copyright (c) 2024
+ *
+ */
 #ifndef MLP_CLASSIFIER_H
 #define MLP_CLASSIFIER_H
-
+#define SC_INCLUDE_FX
 #include <systemc.h>
 #include <vector>
 
@@ -15,12 +23,12 @@
 SC_MODULE(MLPClassifier)
 {
     // Ports
-    sc_in<bool> clk;                                                                       // Clock signal
-    sc_in<bool> reset;                                                                     // Reset signal
-    sc_in<bool> start;                                                                     // Start signal
-    sc_out<bool> done;                                                                     // Done signal
-    sc_in<sc_fixed<FIXED_POINT_WIDTH, FIXED_POINT_INT_BITS>> cls_token[EMBED_DIM];         // [CLS] Token input
-    sc_out<sc_fixed<FIXED_POINT_WIDTH, FIXED_POINT_INT_BITS>> classification[NUM_CLASSES]; // Classification output
+    sc_in<bool> clk;                                                                              // Clock signal
+    sc_in<bool> reset;                                                                            // Reset signal
+    sc_in<bool> start;                                                                            // Start signal
+    sc_out<bool> done;                                                                            // Done signal
+    sc_in<sc_dt::sc_fixed<FIXED_POINT_WIDTH, FIXED_POINT_INT_BITS>> cls_token[EMBED_DIM];         // [CLS] Token input
+    sc_out<sc_dt::sc_fixed<FIXED_POINT_WIDTH, FIXED_POINT_INT_BITS>> classification[NUM_CLASSES]; // Classification output
 
     // Internal variables for weights and biases
     std::vector<std::vector<float>> W1; // Shape: HIDDEN_DIM x EMBED_DIM
