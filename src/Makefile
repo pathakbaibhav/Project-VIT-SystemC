@@ -47,7 +47,7 @@ $(TARGET): $(OBJS)
 test: $(TARGET)
 	# python3 scripts/imgLoadAndPreprocess.py ../eval/JPEG tmp/img.csv
 	# python3 scripts/weights/readweights_multiple_files.py tmp/weights
-	./$(TARGET) tmp/img.csv tmp/weights
+	./$(TARGET) ../eval/JPEG/n01491361_tiger_shark.JPEG tmp/weights
 
 # Clean everything 
 clean:

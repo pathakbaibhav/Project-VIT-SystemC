@@ -27,7 +27,7 @@ def save_single_weight(output_dir, name, array):
         os.makedirs(block_dir, exist_ok=True)
         
         # Generate the file path for the weight file
-        file_name = f"{name.replace('.', '_')}_weights.csv"
+        file_name = f"{name.replace('.', '_')}.csv"
         file_path = os.path.join(block_dir, file_name)
 
         # Flatten arrays for CSV saving if necessary
@@ -39,7 +39,7 @@ def save_single_weight(output_dir, name, array):
             reshaped_array = array  # Already 2D
 
         # Save to CSV
-        np.savetxt(file_path, reshaped_array, delimiter=",")
+        np.savetxt(file_path, reshaped_array, delimiter=",", fmt='%.18e')
         print(f"Saved {name} weights to {file_path}")
 
 def save_weights(output_dir):

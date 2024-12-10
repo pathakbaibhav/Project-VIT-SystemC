@@ -23,41 +23,28 @@
 
 using namespace sc_core;
 
-/** 
- * WEIGHTS INFO
- * 
- * The weights for the patch embedding layer are saved in four seperate .csv files
- * within the ../tmp directory. The original weights are of the shapes listed out here.
- * In the script to load the weights, multidimensional arrays are flattened to 1D arrays.
- * 
- * cls_token, shape: torch.Size([1, 1, 768]), ndim: 3
- * pos_embed, shape: torch.Size([1, 197, 768]), ndim: 3
- * patch_embed.proj.weight, shape: torch.Size([768, 3, 16, 16]), ndim: 4
- * patch_embed.proj.bias, shape: torch.Size([768]), ndim: 1
- */
-
 SC_MODULE(PatchEmbedding) {
     private:
-        Eigen::MatrixXf patch_embedding_weights; // Embedding projection weights
-        Eigen::VectorXf cls_token;              // Class token weights
-        Eigen::VectorXf pos_embed;              // Positional embedding weights
+        // Weights
+        Eigen::MatrixXf patch_embed_proj_weight;    // Shape: [768, 3 * 16 * 16]
+        Eigen::VectorXf patch_embed_proj_bias;      // Shape: [768]
+        Eigen::MatrixXf pos_embed;                  // Shape: [197, 768]
+        Eigen::MatrixXf cls_token;                  // Shape: [1, 768]
 
-        std::vector<cv::Mat> extractPatches(const cv::Mat& image);
-        Eigen::MatrixXf addPositionEmbeddings(const std::vector<cv::Mat>& patches);
-        Eigen::VectorXf patchToVector(const cv::Mat& patch);
-        Eigen::VectorXf applyPatchEmbedding(const Eigen::VectorXf& patch);
+        cv::Mat getImage(const std::string& image_path);
+        Eigen::MatrixXf extractPatches(const cv::Mat& image);
+        Eigen::MatrixXf patchEmbeddingMain();
 
     public:
-    /** Input/Output */
         std::string img_path;           // Path to the input image
         std::string weights_dir;        // Directory with all of the weight files
-        float* output_buffer;           // Array to store the output of the patch embedding
-        int patch_size;
-        int embed_dim;
+        Eigen::MatrixXf* output_buffer; // Matrix to store the output of the patch embedding
+        int patch_height;               // How many pixels is a patch – using 16x16
+        int embed_dim;                  // Dimension of embedding layer – using 768
 
         sc_in<bool> start;              // Start signal
-        sc_in<int> img_length;          // Will always be 256
-        sc_in<int> img_height;          // Will always be 256
+        sc_in<int> img_length;          // Will always be 224
+        sc_in<int> img_height;          // Will always be 224
         sc_in<int> img_channels;        // Will always be 3
 
         sc_out<bool> done;              // Done signal

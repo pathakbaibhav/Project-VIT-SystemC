@@ -15,6 +15,15 @@
 
 using namespace std;
 
+void Testbench::setParameters() {
+    vt.img_path = img_path;
+    vt.weights_dir = weights_dir;
+    vt.patch_size = patch_size;
+    vt.embed_dim = embed_dim;
+
+    vt.setParameters();
+}
+
 void Testbench::stim() {                // SC_THREAD
     img_length = IMAGE_WIDTH;
     img_height = IMAGE_HEIGHT;
@@ -26,5 +35,6 @@ void Testbench::stim() {                // SC_THREAD
 
 void Testbench::getClassification() {   // SC_METHOD
     cout << "Image path: " << img_path << "  ****  ";
+    cout << "Weight directory: " << weights_dir << endl;
     cout << "Classification: " << classification << endl;
 }

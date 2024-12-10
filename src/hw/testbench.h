@@ -11,11 +11,10 @@
 
 #include <systemc.h>
 #include <string>
-#include "../include/pixel.h"
 #include "top.h"
 
-const int IMAGE_WIDTH = 256;
-const int IMAGE_HEIGHT = 256;
+const int IMAGE_WIDTH = 224;
+const int IMAGE_HEIGHT = 224;
 const int IMAGE_CHANNELS = 3;
 
 
@@ -36,6 +35,7 @@ SC_MODULE(Testbench) {
         VisionTransformer vt;               // Call the top module
 
         // void writeImage();
+        void setParameters();
         void stim();
         void getClassification();
 

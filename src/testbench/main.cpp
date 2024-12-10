@@ -30,6 +30,8 @@ int sc_main(int argc, char* argv[])
     tb.patch_size = 16;
     tb.embed_dim = 768;
 
+    tb.setParameters();
+
     cout << "Starting simulation" << endl;
     sc_start();
 
