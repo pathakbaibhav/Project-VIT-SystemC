@@ -1,19 +1,9 @@
-/**
- * @file testbench.cpp
- * @brief
- * @version 0.1
- * @date 2024-12-03
- *
- * @copyright Copyright (c) 2024
- *
- */
+
 
 #ifndef TOPCLASSIFIER_H
 #define TOPCLASSIFIER_H
 
-#define SC_INCLUDE_FX
 #include <systemc.h>
-#include <sysc/datatypes/fx/sc_fixed.h>
 #include "patchEmbedding.h"
 #include "transformer.h"
 #include "mlpclassifier.h"

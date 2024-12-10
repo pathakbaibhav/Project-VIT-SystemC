@@ -44,7 +44,7 @@ int sc_main(int argc, char *argv[])
 {
     // Instantiate your top-level module
     VisionTransformer vt("vision_transformer");
-
+    // TopModule top("top");
     // Set up any necessary signals or stimuli here
 
     // Run the simulation
