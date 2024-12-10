@@ -2,34 +2,28 @@
 #define ENCODER_H
 
 #include <systemc.h>
+#include <iostream>
+#include <cmath>
 #include <Eigen/Dense>
+#include <vector>
+#include <ctime>
+#include <random>
 
-// Define dimensions as constants for simplicity
-const int HIDDEN_SIZE = 768;
-const int NUM_HEADS = 12;
-const int HEAD_DIM = HIDDEN_SIZE / NUM_HEADS;
 
-SC_MODULE(encoder) {
-    // Input and output signals
-    sc_signal<Eigen::MatrixXf> inpL, inpFF;
-    sc_signal<Eigen::MatrixXf> cur;
+extern const int num_heads;
+extern const int embed_size;
+extern const int n;
+extern const int head_dim;
 
-    // Encoder operations
-    void self_attention();
-    void feed_forward();
-    void compute_output();
 
-    // Constructor
-    SC_CTOR(encoder) {
-        SC_METHOD(self_attention);
-        sensitive << inpL;
+extern Eigen::MatrixXf tensor;
 
-        SC_METHOD(feed_forward);
-        sensitive << inpFF;
+void LayerNorm();
+void initialize_weights(Eigen::MatrixXf &Wq, Eigen::MatrixXf &Wk, Eigen::MatrixXf &Wv, Eigen::MatrixXf &Wo);
+void multi_head_attention(Eigen::MatrixXf &tensor);
+void Dropout(Eigen::MatrixXf &input, float dropout_rate);
+Eigen::MatrixXf residual_connection(const Eigen::MatrixXf &input, const Eigen::MatrixXf &output);
+void GELU(Eigen::MatrixXf &matrix);
+void MLPBlock(Eigen::MatrixXf &input_tensor);
 
-        SC_METHOD(compute_output);
-        sensitive << cur;
-    }
-};
-
-#endif // ENCODER_H
+#endif 
