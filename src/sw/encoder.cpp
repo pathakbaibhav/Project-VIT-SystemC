@@ -5,6 +5,7 @@
 #include <vector> 
 #include <ctime> 
 #include <random>
+#include "encoder.h"
 
 const int num_heads = 12;
 const int embed_size = 768; 
