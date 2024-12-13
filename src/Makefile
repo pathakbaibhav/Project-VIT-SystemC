@@ -43,11 +43,13 @@ all: $(TARGET)
 $(TARGET): $(OBJS)
 	$(CXX) $^ $(LDFLAGS) -o $@
 
+# Make weights
+weights:
+	python3 scripts/weights/readweights_multiple_files.py tmp/weights
+
 # Execute test
 test: $(TARGET)
-	python3 scripts/imgLoadAndPreprocess.py ../eval/JPEG tmp/img.csv
-	python3 scripts/weights/readweights_multiple_files.py tmp/weights
-	./$(TARGET) ../eval/JPEG/n01491361_tiger_shark.JPEG tmp/weights
+	./$(TARGET) ../eval/n01491361_tiger_shark.JPEG tmp/weights
 
 # Clean everything 
 clean:
