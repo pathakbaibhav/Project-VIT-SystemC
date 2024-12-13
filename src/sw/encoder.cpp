@@ -12,7 +12,16 @@ const int embed_size = 768;
 const int n = 196; 
 const int head_dim = embed_size / num_heads;
 
+
 Eigen::MatrixXf tensor(n + 1, embed_size);
+
+Eigen::MatrixXf Q;
+Eigen::MatrixXf K;
+Eigen::MatrixXf V;
+Eigen::MatrixXf W1;
+Eigen::VectorXf B1;
+Eigen::MatrixXf W2;
+Eigen::VectorXf B2;
 
 void LayerNorm(Eigen::MatrixXf &input) {
     Eigen::VectorXf mean = input.rowwise().mean(); 
@@ -23,22 +32,20 @@ void LayerNorm(Eigen::MatrixXf &input) {
 }
 
 
-// need to replace by weights
-void initialize_weights(Eigen::MatrixXf &Wq, Eigen::MatrixXf &Wk, Eigen::MatrixXf &Wv, Eigen::MatrixXf &Wo) {
-    Wq = Eigen::MatrixXf::Random(embed_size, embed_size);
-    Wk = Eigen::MatrixXf::Random(embed_size, embed_size);
-    Wv = Eigen::MatrixXf::Random(embed_size, embed_size);
-    Wo = Eigen::MatrixXf::Random(embed_size, embed_size);
+// accept weights when Robbie calls this function
+void initialize(const EncoderEights& weights) {
+    Q = weights.Q;
+    K = weights.K;
+    V = weights.V;
+    W1 = weights.mlp_fc1_weight;
+    B1 = weights.mlp_fc1_bias;
+    W2 = weights.mlp_fc2_weight;
+    B2 = weights.mlp_fc2_bias;
 }
 
 void multi_head_attention(Eigen::MatrixXf &tensor) {
     // linear projection to get matrix Q, K, V
-    Eigen::MatrixXf Wq(embed_size, embed_size), Wk(embed_size, embed_size), Wv(embed_size, embed_size), Wo(embed_size, embed_size);
-    initialize_weights(Wq, Wk, Wv, Wo);
-
-    Eigen::MatrixXf Q = tensor * Wq;
-    Eigen::MatrixXf K = tensor * Wk;
-    Eigen::MatrixXf V = tensor * Wv;
+    //Eigen::MatrixXf Wq(embed_size, embed_size), Wk(embed_size, embed_size), Wv(embed_size, embed_size), Wo(embed_size, embed_size);
 
     // split into different heads
     std::vector<Eigen::MatrixXf> Q_heads(num_heads), K_heads(num_heads), V_heads(num_heads);
@@ -87,12 +94,6 @@ void GELU(Eigen::MatrixXf &matrix) {
 }
 
 void MLPBlock(Eigen::MatrixXf &input_tensor) {
-    // feed forward network, should replace with weights
-    Eigen::MatrixXf W1 = Eigen::MatrixXf::Random(embed_size, embed_size * 4); // Expand dimensionality
-    Eigen::MatrixXf W2 = Eigen::MatrixXf::Random(embed_size * 4, embed_size); // Reduce dimensionality
-    Eigen::VectorXf b1 = Eigen::VectorXf::Random(embed_size * 4);            // Bias for first layer
-    Eigen::VectorXf b2 = Eigen::VectorXf::Random(embed_size);                // Bias for second layer
-
     // first linear layer with GELU
     Eigen::MatrixXf hidden = (input_tensor * W1).rowwise() + b1.transpose();
     GELU(hidden);
