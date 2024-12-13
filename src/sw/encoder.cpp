@@ -68,13 +68,13 @@ void multi_head_attention(Eigen::MatrixXf &tensor) {
     tensor = concatenated_attention * Wo;
 }
 
-void Dropout(Eigen::MatrixXf &input, float dropout_rate) {
-    std::srand(static_cast<unsigned>(std::time(0)));
-    Eigen::MatrixXf mask = Eigen::MatrixXf::Random(input.rows(), input.cols()).unaryExpr([dropout_rate](float x) -> float {
-        return (x > dropout_rate) ? 1.0f : 0.0f;
-    });
-    input = input.array() * mask.array();
-}
+// void Dropout(Eigen::MatrixXf &input, float dropout_rate) {
+//     std::srand(static_cast<unsigned>(std::time(0)));
+//     Eigen::MatrixXf mask = Eigen::MatrixXf::Random(input.rows(), input.cols()).unaryExpr([dropout_rate](float x) -> float {
+//         return (x > dropout_rate) ? 1.0f : 0.0f;
+//     });
+//     input = input.array() * mask.array();
+// }
 
 Eigen::MatrixXf residual_connection(const Eigen::MatrixXf &input, const Eigen::MatrixXf &output) {
     return input + output;
@@ -96,7 +96,7 @@ void MLPBlock(Eigen::MatrixXf &input_tensor) {
     // first linear layer with GELU
     Eigen::MatrixXf hidden = (input_tensor * W1).rowwise() + b1.transpose();
     GELU(hidden);
-    Dropout(hidden, 0.1f); 
+    //Dropout(hidden, 0.1f); 
 
     // second linear layer
     Eigen::MatrixXf output = (hidden * W2).rowwise() + b2.transpose();
@@ -112,7 +112,7 @@ int sc_main(int argc, char* argv[]) {
 
     multi_head_attention(tensor);
 
-    Dropout(tensor, 0.1f);     
+    //Dropout(tensor, 0.1f);     
     tensor = residual_connection(input_tensor, tensor);
     LayerNorm(tensor);
 
