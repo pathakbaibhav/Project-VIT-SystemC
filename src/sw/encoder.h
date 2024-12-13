@@ -2,28 +2,37 @@
 #define ENCODER_H
 
 #include <systemc.h>
-#include <iostream>
-#include <cmath>
 #include <Eigen/Dense>
-#include <vector>
-#include <ctime>
-#include <random>
 
+SC_MODULE(Encoder) {
+    sc_in<bool> run_encoder_signal;
+    sc_in<Eigen::MatrixXf> input_tensor;
+    sc_out<Eigen::MatrixXf> output_tensor;
 
-extern const int num_heads;
-extern const int embed_size;
-extern const int n;
-extern const int head_dim;
+    // Weights for the encoder
+    Eigen::MatrixXf Q, K, V;
+    Eigen::MatrixXf W1, W2;
+    Eigen::VectorXf B1, B2;
+    Eigen::MatrixXf tensor;
 
+    void initialize_weights(const EncoderWeights& weights);
 
-extern Eigen::MatrixXf tensor;
+    void layer_norm(Eigen::MatrixXf& input);
 
-void LayerNorm();
-void initialize_weights(Eigen::MatrixXf &Wq, Eigen::MatrixXf &Wk, Eigen::MatrixXf &Wv, Eigen::MatrixXf &Wo);
-void multi_head_attention(Eigen::MatrixXf &tensor);
-void Dropout(Eigen::MatrixXf &input, float dropout_rate);
-Eigen::MatrixXf residual_connection(const Eigen::MatrixXf &input, const Eigen::MatrixXf &output);
-void GELU(Eigen::MatrixXf &matrix);
-void MLPBlock(Eigen::MatrixXf &input_tensor);
+    void multi_head_attention(Eigen::MatrixXf& tensor);
 
-#endif 
+    Eigen::MatrixXf residual_connection(const Eigen::MatrixXf& input, const Eigen::MatrixXf& output);
+
+    void gelu(Eigen::MatrixXf& matrix);
+
+    void mlp_block(Eigen::MatrixXf& tensor);
+
+    void run_encoder_process();
+
+    SC_CTOR(Encoder) {
+        SC_THREAD(run_encoder_process);
+        sensitive << run_encoder_signal;
+    }
+};
+
+#endif // ENCODER_H
