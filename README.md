@@ -2,6 +2,15 @@
 
 EECE 7368 Project: Modeling a Vision Transformer SoC with SystemC
 
+## USE
+```bash
+git clone --recurse-submodules https://github.com/neu-ece-7368-f24/prj-vit-team.git
+cd prj-vit-team/src
+make
+make weights
+make test
+```
+
 ## Description
 
 In this project, we explore the idea of implementing the Vision Transformer (ViT) image classification tool in pure hardware. We will first implement the exact architecture outlined in Dosovitskiy et. Al. in SystemC. From there, we intend to evaluate our implementation, expand it to work with different pretrained models, and, as a stretch, explore means to produce a synthesizable design of the hardware-ViT that can be deployed on a FPGA.
