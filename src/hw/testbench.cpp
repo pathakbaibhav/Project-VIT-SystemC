@@ -39,16 +39,3 @@ void Testbench::getClassification() {   // SC_METHOD
     cout << "Weight directory: " << weights_dir << endl;
     cout << "Classification: " << classification << endl;
 }
-
-int sc_main(int argc, char *argv[])
-{
-    // Instantiate your top-level module
-    VisionTransformer vt("vision_transformer");
-    // TopModule top("top");
-    // Set up any necessary signals or stimuli here
-
-    // Run the simulation
-    sc_start();
-
-    return 0;
-}
