@@ -55,3 +55,5 @@ MLP/SRC/weights/trained_vit.pth
 src/weights/weights.cpp
 src/sw/weights.cpp
 MLP/SRC/weights/weights.h
+
+.DS_Store
